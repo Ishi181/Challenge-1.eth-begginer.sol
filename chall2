@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleContract {
+    uint256 internal storedData;
+    uint public x = 8;
+
+    function getadd(uint y) public view returns (uint) {
+        return x + y;
+    }
+
+    function add(uint256 a, uint256 b) public pure returns (uint256) {
+        return a + b;
+    }
+
+    function setStoredData(uint256 data) public payable {
+       // require(msg.value > 0, "Must send some ether");
+        storedData = data;
+    }
+}
