@@ -85,7 +85,59 @@ contract Students is ERC20{
 }
 ```
 
-To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.18" (or another compatible version), and then click on the ("Compile "the name of the file" ") for ex. comple first.sol button. Once the code is compiled, you can deploy the contract by clicking on the "Deploy & Run Transactions" tab in the left-hand sidebar. Select the "Challenge.sol" contract from the dropdown menu, and then click on the "Deploy" button. then u can see a the below of the option ' Deployed/Unpinned Contracts ' expand it and balances mint burn etc and now u can see our code is ready to run .
+To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.18" (or another compatible version), and then click on the ("Compile "the name of the file" ") for ex. comple first.sol button. Once the code is compiled, you can deploy the contract by clicking on the "Deploy & Run Transactions" tab in the left-hand sidebar. Select the "newmy.sol" contract from the dropdown menu, and then click on the "Deploy" button. then u can see a the below of the option ' Deployed/Unpinned Contracts ' expand it and balances mint burn etc and now u can see our code is ready to run .
+
+# Program Explanation
+```import "@openzeppelin/contracts/token/ERC20/ERC20.sol";```
+This import statement brings in the ERC20 implementation from the OpenZeppelin library, providing standard ERC20 token functionality.
+
+```
+function mintTokens(uint _amount) external onlyOwner {
+    _mint(msg.sender, _amount);
+}
+```
+Allows the owner to mint new tokens.
+
+```
+function registerStudent(address _address, uint marks) external onlyOwner{
+        require(marks <=100);
+        student memory newst = student(studentCount,_address,marks,balanceOf(_address));
+        studentInfo.push(newst);
+        studentIndex[_address] = studentCount;
+        studentCount++;
+    }
+```
+registerStudent: Allows the owner to register a new student. It requires the student's address and marks (which must be less than or equal to 100). It creates a new student struct, stores it in the studentInfo array, and updates the studentIndex mapping.
+
+```
+function rewardStudent(address _address,uint _amount) external onlyOwner{
+         _transfer(msg.sender, _address,_amount );
+         studentInfo[studentIndex[_address]].tokenCount = balanceOf(_address);
+    }
+```
+rewardStudent: Allows the owner to transfer tokens from the owner's balance to a student's address. After the transfer, it updates the student's tokenCount to reflect the new balance.
+
+```
+function displayStudents() external view returns(student[] memory){
+        return studentInfo;
+    }
+```
+displayStudents: Returns the list of all registered students.
+
+ ```
+function transferToken(address _to, uint amount) external{
+        require(balanceOf(msg.sender)>0);
+        _transfer(msg.sender, _to, amount);
+    }
+```
+transferToken: Allows any user to transfer tokens to another address. The sender must have a positive balance.
+
+```
+function burnTokens(uint _amount)external{
+        _burn(msg.sender, _amount);
+    }
+```
+burnTokens: Allows any user to burn (destroy) a specified amount of their tokens, reducing the total supply.
 
 ## Authors
 
